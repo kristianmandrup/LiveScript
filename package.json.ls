@@ -37,6 +37,7 @@ scripts:
   pretest: 'bin/slake build && bin/slake build:parser && bin/slake build'
   test: 'bin/slake test'
   'test-harmony': 'node --harmony ./bin/slake test'
+  'compile-harmony': 'node --harmony ./bin/slake compile-es6'
   posttest: 'git checkout -- lib'
 
 prefer-global: true
@@ -51,6 +52,7 @@ dependencies:
 
 dev-dependencies:
   jison: '0.2.1'
+  'node-traceur': '0.1.3'
   'uglify-js': '~2.4.12'
   istanbul: '~0.2.4'
   browserify: '~3.0.0'
