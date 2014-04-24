@@ -27,25 +27,29 @@ can be run in ES5 javascript environments.
 See [wiki](https://github.com/kristianmandrup/LiveScript/wiki) for more info.
 
 The `src` folder contains all the source files which make up the LiveScript lexer and parser.
-The main `src` folder is for LiveScript that is *ES5* compatible.
-The sub-folder `src/es6` contains the source files for *ES6* (harmony) LiveScript, currently under development.
+The `lib` folder contains the compiled javascript files for all the ls files in the source folder `src`
 
-The `lib` folder contains the compiled javascript files for all the ls files in the source folder `src` including for ES6
-which are compiled to `lib/es6`.
+### Compile src files
 
-In order to change the src files and have them reflected in lib:
 Run the following, which watches, compiles and outputs ls files from `src` and outputs compiles js files in `lib`
 
 `lsc -wco lib src`
+
+### Build ES6 parser
 
 To build the ES6 "experimental" parser run:
 
 `$ slake build-es6:parser`
 
-See the `Slakefile`. Tasks have been added for ES6 that target the es6 specific source and destination folders
+### Slake file
 
 `slake` is a simplified version of [Make](http://www.gnu.org/software/make/)
 ([Rake](http://rake.rubyforge.org/), [Jake](http://github.com/280north/jake)) for LiveScript.
+
+
+Tasks have been added to the `Slakefile` for ES6. These tasks target the es6 specific source and destination folders.
+
+- compile-es6
 
 See the `lib/slake.js` file.
 
@@ -58,3 +62,19 @@ More slake utils:
 The tests can all be found in the `test` folder. Tests for ES6 are in the sub-folder `test/es6`.
 
 `$ node --harmony lib/slake.js test-es6`
+
+## Node scripts
+
+The package.json have the following new scripts
+- compile-es6 (compile test files to es6 syntax)
+- transpile-es6 (transpile test files to es5 by first compiling to es6 syntax)
+- test-es6 (runs es6 tests by first transpiling)
+
+Note that each of these are currently hardcoded to only operate on `block_scoping.ls`
+
+
+```LieScript
+# Slakefile
+
+files = ['es6/block_scoping.ls'] # hard coded to only run block_scoping test for now
+```

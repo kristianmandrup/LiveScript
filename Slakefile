@@ -114,6 +114,8 @@ task \test-es6 'run-es6 test/es6' -> runTestsEs6 require './lib/es6'
 
 task \compile-es6 'compile-es6 test/es6' -> compileEs6 require './lib/es6'
 
+task \transpile-es6 'transpile-es6 test/es6' -> transpileEs6 require './lib/es6'
+
 task \test:json 'test JSON {de,}serialization' ->
   {ast} = require './lib'
   json = ast slurp \src/ast.ls .stringify!
@@ -197,7 +199,8 @@ function write-file file, content
 
 function compileEs6 global.LiveScript
   files = dir \test/es6
-  console.log 'process args', process.execArgv
+
+  # console.log 'process args', process.execArgv
   unless '--harmony' in process.execArgv or '--harmony-generators' in process.execArgv
     say "Missing --harmony node option"
     return
@@ -210,12 +213,35 @@ function compileEs6 global.LiveScript
       # write code to js file
       js-filename = change-extension file, '.js'
       write-file js-filename, code
+      # traceur-transpile js-filename
 
-      traceur-transpile js-filename
+function transpileEs6 global.LiveScript
+  compileEs6!
+  files = dir \test/es6
+
+  # console.log 'process args', process.execArgv
+  unless '--harmony' in process.execArgv or '--harmony-generators' in process.execArgv
+    say "Missing --harmony node option"
+    return
+
+  files = ['block_scoping.ls'] # hard coded to only run block_scoping test for now
+
+  for each file in files
+    js-filename = change-extension file, '.js'
+    filename = path.join \test/es6 js-filename
+    transpile-traceur filename
 
 function runTestsEs6 global.LiveScript
   compileEs6!
   files = dir \test/es6
+
+  # console.log 'process args', process.execArgv
+  unless '--harmony' in process.execArgv or '--harmony-generators' in process.execArgv
+    say "Missing --harmony node option"
+    return
+
+  files = ['block_scoping.ls'] # hard coded to only run block_scoping test for now
+
   for each file in files
     file-name = path.basename file
     code = slurp filename = path.join \test/es6 file-name '-es5' '.js'

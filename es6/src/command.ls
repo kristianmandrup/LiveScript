@@ -1,13 +1,14 @@
 require! {
   '..': LiveScript
+  '../es6': LiveScriptEs6
   path
   fs
   util
-  'prelude-ls': {each, break-list}:prelude
-  './options': {parse: parse-options, generate-help}
+  'prelude-ls': {each, break-list}:
+  prelude  './options': {parse: parse-options, generate-help}
 }
-
 version = LiveScript.VERSION
+es6-version = LiveScriptEs6.VERSION
 
 say = console.log
 warn = console.error
@@ -74,9 +75,18 @@ switch
     if top or '.ls' is source.slice -3
       if o.watch then watch source, work else work!
 
+!function detect-directive source ->
+  /('|")use.* harmony('|")/.test source
+
+!function detect-livescript-es filename
+  # read first 5 lines and see if directive "use harmony" can be found there
+  has-harmony-directive = fshoot 'readFile' source, !-> detect-directive source
+  if has-harmony-directive? then LiveScriptES6 else LiveScript
+
 # Compile a single source script, containing the given code, according to the
 # requested options.
 !function compile-script filename, input, base
+  LiveScript := detect-livescript-es filename
   options = {filename, o.bare, o.const}
   t       = {input, options}
   try

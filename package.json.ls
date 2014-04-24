@@ -37,7 +37,9 @@ scripts:
   pretest: 'bin/slake build && bin/slake build:parser && bin/slake build'
   test: 'bin/slake test'
   'test-harmony': 'node --harmony ./bin/slake test'
-  'compile-harmony': 'node --harmony ./bin/slake compile-es6'
+  'test-es6': 'node --harmony ./bin/slake test-es6'
+  'compile-es6': 'node --harmony ./bin/slake compile-es6'
+  'transpile-es6': 'node --harmony ./bin/slake transpile-es6'
   posttest: 'git checkout -- lib'
 
 prefer-global: true
