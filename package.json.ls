@@ -34,8 +34,9 @@ bin:
   lsc: './bin/lsc'
 
 scripts:
-  pretest: 'make force && make force'
-  test: 'make test'
+  pretest: 'bin/slake build && bin/slake build:parser && bin/slake build'
+  test: 'bin/slake test'
+  'test-harmony': 'node --harmony ./bin/slake test'
   posttest: 'git checkout -- lib'
 
 prefer-global: true

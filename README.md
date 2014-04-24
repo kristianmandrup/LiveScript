@@ -14,3 +14,15 @@ After, run `livescript` for more information.
 
 ### Source
 [git://github.com/gkz/LiveScript.git](git://github.com/gkz/LiveScript.git)
+
+
+## ES6 and harmony
+
+This branch merges the *generators* branch with master.
+`package.json` exposes `test-harmony` which runs tests in `node --harmony` mode.
+The *generators* branch contains a generators test which will pass when run on a `node` version which support generators.
+
+This branch aims to further support ES6 syntax by leveraging the traceur transpiler, which compiles ES6 code to ES5 compatible code so it
+can be run in ES5 javascript environments.
+
+See [wiki](https://github.com/kristianmandrup/LiveScript/wiki) for more info.
