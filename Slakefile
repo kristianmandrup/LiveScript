@@ -17,7 +17,7 @@ run = (args) ->
 # ES6
 run-es6 = (args) ->
   console.log 'run-es6'
-  proc = spawn \node ['--harmony' \lib/esg/command]
+  proc = spawn \node ['--harmony' \es6/lib/command]
   proc.stderr.on \data say
   proc       .on \exit -> process.exit it if it
 
@@ -48,11 +48,11 @@ task \build 'build lib/ from src/' ->
   run [\-bco \lib] ++ sources
 
 # ES6
-task \build-es6 'build lib/es6 from src/es6' ->
+task \build-es6 'build es6/lib from es6/src' ->
   ext = /\.ls$/
-  sources = for file in dir \src/es6
-    \src/es6/ + file if ext.test file
-  run-es6 [\-bco \lib/es6] ++ sources
+  sources = for file in dir \es6/src
+    \es6/src + file if ext.test file
+  run-es6 [\-bco \es6/lib] ++ sources
 
 task \build:full 'build twice and run tests' ->
   shell 'bin/slake build && bin/slake build && bin/slake test'
@@ -71,9 +71,9 @@ task \build:parser 'build lib/parser.js from lib/grammar.js' ->
       .replace /(:[^]+?break;)(?=\ncase \d+\1)/g \:
       .replace /(:return .+)\nbreak;/g \$1
 
-task \build-es6:parser 'build lib/es6/parser.js from lib/es6/grammar.js' ->
-  spit \lib/es6/parser.js,
-    require(\./lib/es6/grammar)generate!
+task \build-es6:parser 'build es6/lib/parser.js from es6/lib/grammar.js' ->
+  spit \es6/lib/parser.js,
+    require(\./es6/lib/grammar)generate!
       .replace /^[^]+?var (?=parser = {)/ \exports.
       .replace /\ncase \d+:\nbreak;/g ''
       .replace /return parser;[^]+/ ''
@@ -110,11 +110,11 @@ task \loc 'count the lines in main compiler code' ->
 task \test 'run test/' -> runTests require './lib/'
 
 # ES6
-task \test-es6 'run-es6 test/es6' -> runTestsEs6 require './lib/es6'
+task \test-es6 'run-es6 es6/test' -> runTestsEs6 require './es6/lib'
 
-task \compile-es6 'compile-es6 test/es6' -> compileEs6 require './lib/es6'
+task \compile-es6 'compile-es6 es6/test' -> compileEs6 require './es6/lib'
 
-task \transpile-es6 'transpile-es6 test/es6' -> transpileEs6 require './lib/es6'
+task \transpile-es6 'transpile-es6 es6/test' -> transpileEs6 require './es6/lib'
 
 task \test:json 'test JSON {de,}serialization' ->
   {ast} = require './lib'
@@ -198,7 +198,7 @@ function write-file file, content
     console.log "error writing: #{file}" if(err)
 
 function compileEs6 global.LiveScript
-  files = dir \test/es6
+  files = dir \es6/test
 
   # console.log 'process args', process.execArgv
   unless '--harmony' in process.execArgv or '--harmony-generators' in process.execArgv
@@ -208,7 +208,7 @@ function compileEs6 global.LiveScript
 
   files.forEach (file) ->
     return unless /\.ls$/i.test file
-    code = slurp filename = path.join \test/es6 file
+    code = slurp filename = path.join \es6/test file
     LiveScript.run code, {filename}, ->
       # write code to js file
       js-filename = change-extension file, '.js'
@@ -217,7 +217,7 @@ function compileEs6 global.LiveScript
 
 function transpileEs6 global.LiveScript
   compileEs6!
-  files = dir \test/es6
+  files = dir \es6/test/
 
   # console.log 'process args', process.execArgv
   unless '--harmony' in process.execArgv or '--harmony-generators' in process.execArgv
@@ -228,12 +228,12 @@ function transpileEs6 global.LiveScript
 
   for each file in files
     js-filename = change-extension file, '.js'
-    filename = path.join \test/es6 js-filename
+    filename = path.join \es6/test js-filename
     transpile-traceur filename
 
 function runTestsEs6 global.LiveScript
   compileEs6!
-  files = dir \test/es6
+  files = dir \es6/test
 
   # console.log 'process args', process.execArgv
   unless '--harmony' in process.execArgv or '--harmony-generators' in process.execArgv
@@ -244,7 +244,7 @@ function runTestsEs6 global.LiveScript
 
   for each file in files
     file-name = path.basename file
-    code = slurp filename = path.join \test/es6 file-name '-es5' '.js'
+    code = slurp filename = path.join \es6/test file-name '-es5' '.js'
 
     try LiveScript.run code, {filename} catch
       ++failedTests
