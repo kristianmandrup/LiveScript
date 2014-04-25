@@ -46,6 +46,15 @@ To add additional script tasks, edit the `scripts:` part of `package.json.ls`, t
 
 `lsc package.json.ls > package.json`
 
+### Make file
+
+LiveScript has recently changed from using Slakefile back to using Makefile.
+The new convention is to have the core script logic in the `scripts` folder such as `scripts/test` and `scripts/build-parser`
+
+You are most welcome in helping out to port the `Slakefile` to `Makefile` and `es6/scripts`.
+
+Thanks :)
+
 ### Slake file
 
 **Update**
