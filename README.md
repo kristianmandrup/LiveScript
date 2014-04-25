@@ -73,7 +73,7 @@ The package.json have the following new scripts
 Note that each of these are currently hardcoded to only operate on `block_scoping.ls`
 
 
-```LieScript
+```LiveScript
 # Slakefile
 
 files = ['es6/block_scoping.ls'] # hard coded to only run block_scoping test for now
