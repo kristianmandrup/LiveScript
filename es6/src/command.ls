@@ -4,8 +4,8 @@ require! {
   path
   fs
   util
-  'prelude-ls': {each, break-list}:
-  prelude  './options': {parse: parse-options, generate-help}
+  'prelude-ls': {each, break-list}:prelude
+  './options': {parse: parse-options, generate-help}
 }
 version = LiveScript.VERSION
 es6-version = LiveScriptEs6.VERSION
@@ -75,8 +75,8 @@ switch
     if top or '.ls' is source.slice -3
       if o.watch then watch source, work else work!
 
-!function detect-directive source ->
-  /('|")use.* harmony('|")/.test source
+!function detect-directive source
+  /("use harmony"|'use harmony')/.test source
 
 !function detect-livescript-es filename
   # read first 5 lines and see if directive "use harmony" can be found there

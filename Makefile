@@ -40,6 +40,16 @@ browser/livescript.js: $(LIB) browser scripts/preroll.ls
 browser/livescript-min.js:  browser/livescript.js
 	$(UGLIFYJS) browser/livescript.js --mangle --comments "all" > browser/livescript-min.js
 
+es6/browser:
+	mkdir es6/browser/
+
+es6/browser/livescript.js: $(LIB-ES6) es6/browser scripts/preroll.ls
+	{ ./scripts/preroll ; $(BROWSERIFY) -r ./es6/lib/browser.js:LiveScript ; } > es6/browser/livescript.js
+
+es6/browser/livescript-min.js:  es6/browser/livescript.js
+	$(UGLIFYJS) es6/browser/livescript.js --mangle --comments "all" > es6/browser/livescript-min.js
+
+
 package.json: package.json.ls
 	$(LSC) --compile package.json.ls
 
@@ -49,7 +59,11 @@ all: build
 
 build: $(LIB) package.json
 
+build-es6: $(LIB-ES6) package.json
+
 build-browser: browser/livescript.js browser/livescript-min.js
+
+build-browser-es6: es6/browser/livescript.js es6/browser/livescript-min.js
 
 force:
 	make -B
@@ -70,13 +84,13 @@ test-harmony: build
 	node --harmony ./scripts/test
 
 compile-es6:
-  node --harmony ./es6/scripts/compile
+	node --harmony ./es6/scripts/compile
 
 transpile-es6: compile-es6
-  node --harmony ./es6/scripts/transpile
+	node --harmony ./es6/scripts/transpile
 
 test-es6: transpile-es6
-  node --harmony ./es6/scripts/test
+	node --harmony ./es6/scripts/test
 
 coverage: build
 	$(ISTANBUL) cover ./scripts/test

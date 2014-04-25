@@ -1,4 +1,4 @@
-LiveScript  = require '../es6'
+LiveScript  = require '../lib'
 slurp       = require './base' .slurp
 spit        = require './base' .spit
 tweak       = require './base' .tweak
@@ -15,7 +15,26 @@ tint = (text, color ? green) -> color + text + reset
 
 function runTestsEs6 global.LiveScript
   transpile-es6!
-  files = dir \es6/test
+
+  startTime = Date.now!
+  passedTests = failedTests = 0
+  for let name, func of require \assert
+    global[name] = -> func ...; ++passedTests
+  global <<<
+    eq: strictEqual
+    throws: !(msg, fun) ->
+      try do fun catch then return eq e?message, msg
+      ok false "should throw: #msg"
+    compileThrows: !(msg, lno, code) ->
+      throws "#msg on line #lno" !-> LiveScript.compile code
+  process.on \exit ->
+    time = ((Date.now! - startTime) / 1e3)toFixed 2
+    message = "passed #passedTests tests in #time seconds"
+    say if failedTests
+    then tint "failed #failedTests and #message" red
+    else tint message
+    if failedTests
+      process.exit 1
 
   # console.log 'process args', process.execArgv
   unless '--harmony' in process.execArgv or '--harmony-generators' in process.execArgv
@@ -24,7 +43,7 @@ function runTestsEs6 global.LiveScript
 
   files = ['block_scoping.ls'] # hard coded to only run block_scoping test for now
 
-  for each file in files
+  files.forEach (file) ->
     file-name = path.basename file
     code = slurp filename = path.join \es6/test file-name '-es5' '.js'
 

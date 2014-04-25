@@ -47,18 +47,25 @@ To add additional script tasks, edit the `scripts:` part of `package.json.ls`, t
 
 ### Make file
 
-LiveScript has recently changed from using Slakefile back to using Makefile.
-The new convention is to have the core script logic in the `scripts` folder such as `scripts/test` and `scripts/build-parser`
+Note: LiveScript has recently changed from using `slake` with a `Slakefile` to using make with a `Makefile`.
 
-You are most welcome in helping out to port the `Slakefile` to `Makefile` and `es6/scripts`.
+The core script logic should be placed in the`scripts` folder.
+LiveScript ES6 scripts are placed in `es6/scripts`.
 
-Thanks :)
+`lsc -wco es6/scripts es6/scripts`
+
+### Build parser
+
+When the es6/src and es6/scripts have been compiled, you are ready to build:
+
+`make build-es6`
 
 ## Node scripts
 
 The package.json have the following new scripts
+
 - compile-es6 (compile test files to es6 syntax)
 - transpile-es6 (transpile test files to es5 by first compiling to es6 syntax)
 - test-es6 (runs es6 tests by first transpiling)
 
-Note that each of these are currently hardcoded to only operate on `block_scoping.ls`
+Note: Each of these tasks are currently hardcoded (in the scripts) to only operate on `block_scoping.ls`

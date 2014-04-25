@@ -1,4 +1,4 @@
-LiveScript  = require '../es6'
+LiveScript  = require '../lib'
 slurp       = require './base' .slurp
 spit        = require './base' .spit
 tweak       = require './base' .tweak

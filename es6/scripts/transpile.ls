@@ -1,4 +1,4 @@
-LiveScript  = require '../es6'
+LiveScript  = require '../lib'
 slurp       = require './base' .slurp
 spit        = require './base' .spit
 tweak       = require './base' .tweak
@@ -29,7 +29,7 @@ function transpile-es6
 
   files = ['block_scoping.ls'] # hard coded to only run block_scoping test for now
 
-  for each file in files
+  files.forEach (file) ->
     js-file = tweak file, '.js'
     filename = path.join \es6/test js-file
     transpile-traceur filename

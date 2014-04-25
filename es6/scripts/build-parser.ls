@@ -1,4 +1,4 @@
-console.log require("../es6/lib/grammar" .generate!
+console.log require("../lib/grammar").generate!
   .replace /^[^]+?var (?=parser = {)/ \exports.
   .replace /\ncase \d+:\nbreak;/g ''
   .replace /return parser;[^]+/ ''
