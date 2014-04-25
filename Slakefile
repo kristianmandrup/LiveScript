@@ -71,15 +71,6 @@ task \build:parser 'build lib/parser.js from lib/grammar.js' ->
       .replace /(:[^]+?break;)(?=\ncase \d+\1)/g \:
       .replace /(:return .+)\nbreak;/g \$1
 
-task \build-es6:parser 'build es6/lib/parser.js from es6/lib/grammar.js' ->
-  spit \es6/lib/parser.js,
-    require(\./es6/lib/grammar)generate!
-      .replace /^[^]+?var (?=parser = {)/ \exports.
-      .replace /\ncase \d+:\nbreak;/g ''
-      .replace /return parser;[^]+/ ''
-      .replace /(:[^]+?break;)(?=\ncase \d+\1)/g \:
-      .replace /(:return .+)\nbreak;/g \$1
-
 coreSources = -> ["src/#src.ls" for src in <[ livescript grammar lexer ast ]>]
 
 task \bench 'quick benchmark in compilation time' ->
