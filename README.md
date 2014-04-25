@@ -21,35 +21,55 @@ This branch merges the *generators* branch with master.
 `package.json` exposes `test-harmony` which runs tests in `node --harmony` mode.
 The *generators* branch contains a generators test which will pass when run on a `node` version which support generators.
 
-This branch aims to further support ES6 syntax by leveraging the traceur transpiler, which compiles ES6 code to ES5 compatible code so it
+This branch aims to further support ES6 syntax by leveraging *traceur*, which compiles ES6 code to ES5 compatible code so it
 can be run in ES5 javascript environments.
 
 See [wiki](https://github.com/kristianmandrup/LiveScript/wiki) for more info.
 
+For LiveScript in general:
+
 The `src` folder contains all the source files which make up the LiveScript lexer and parser.
 The `lib` folder contains the compiled javascript files for all the ls files in the source folder `src`
 
+The experimental LiveScript for ES6 lives in the `es6` folder so as to be isolated and not to be "intrusive" to the rest of
+the LiveScript project.
+
 ### Compile src files
 
-Run the following, which watches, compiles and outputs ls files from `src` and outputs compiles js files in `lib`
+Run the following, which watches, compiles and outputs ls files from `es6/src` and outputs compiles js files in `es6/lib`
 
-`lsc -wco lib src`
+`lsc -wco es6/lib es6/src`
 
-### Build ES6 parser
+## Script tasks
+
+To add additional script tasks, edit the `scripts:` part of `package.json.ls`, then compile it with `lsc`
+
+`lsc package.json.ls > package.json`
+
+### Slake file
+
+**Update**
+
+Slake has been removed from master. Awaiting how to achieve something similar to Slake using the new configuration/setup.
+
+*(deprecated)*
+
+`slake` is a simplified version of [Make](http://www.gnu.org/software/make/)
+([Rake](http://rake.rubyforge.org/), [Jake](http://github.com/280north/jake)) for LiveScript.
+
+*Build ES6 parser*
 
 To build the ES6 "experimental" parser run:
 
 `$ slake build-es6:parser`
 
-### Slake file
-
-`slake` is a simplified version of [Make](http://www.gnu.org/software/make/)
-([Rake](http://rake.rubyforge.org/), [Jake](http://github.com/280north/jake)) for LiveScript.
-
 
 Tasks have been added to the `Slakefile` for ES6. These tasks target the es6 specific source and destination folders.
 
+- build-es6
+- test-es6
 - compile-es6
+- transpile-es6
 
 See the `lib/slake.js` file.
 
