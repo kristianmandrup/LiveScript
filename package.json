@@ -37,12 +37,12 @@
     "lsc": "./bin/lsc"
   },
   "scripts": {
-    "test-es6": "node --harmony ./bin/slake test-es6",
-    "compile-es6": "node --harmony ./bin/slake compile-es6",
-    "transpile-es6": "node --harmony ./bin/slake transpile-es6",
     "pretest": "make force && make force",
     "test": "make test",
     "test-harmony": "make test-harmony",
+    "test-es6": "make test-es6",
+    "compile-es6": "make compile-es6",
+    "transpile-es6": "make transpile-es6",
     "posttest": "git checkout -- lib"
   },
   "preferGlobal": true,

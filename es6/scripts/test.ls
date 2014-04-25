@@ -5,6 +5,14 @@ tweak       = require './base' .tweak
 
 transpile-es6 = require './transpile'
 
+# ANSI Terminal Colors.
+bold  = '\33[0;1m'
+red   = '\33[0;31m'
+green = '\33[0;32m'
+reset = '\33[0m'
+
+tint = (text, color ? green) -> color + text + reset
+
 function runTestsEs6 global.LiveScript
   transpile-es6!
   files = dir \es6/test

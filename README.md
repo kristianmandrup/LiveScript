@@ -11,7 +11,6 @@ Have Node.js installed. `sudo npm install -g LiveScript`
 
 After, run `livescript` for more information.
 
-
 ### Source
 [git://github.com/gkz/LiveScript.git](git://github.com/gkz/LiveScript.git)
 
@@ -55,43 +54,6 @@ You are most welcome in helping out to port the `Slakefile` to `Makefile` and `e
 
 Thanks :)
 
-### Slake file
-
-**Update**
-
-Slake has been removed from master. Awaiting how to achieve something similar to Slake using the new configuration/setup.
-
-*(deprecated)*
-
-`slake` is a simplified version of [Make](http://www.gnu.org/software/make/)
-([Rake](http://rake.rubyforge.org/), [Jake](http://github.com/280north/jake)) for LiveScript.
-
-*Build ES6 parser*
-
-To build the ES6 "experimental" parser run:
-
-`$ slake build-es6:parser`
-
-
-Tasks have been added to the `Slakefile` for ES6. These tasks target the es6 specific source and destination folders.
-
-- build-es6
-- test-es6
-- compile-es6
-- transpile-es6
-
-See the `lib/slake.js` file.
-
-More slake utils:
-
-- [node-slake-lsc](https://github.com/ppvg/node-slake-lsc)
-- [slake-build-utils](https://www.npmjs.org/package/slake-build-utils)
-- [node-slake-mocha](https://github.com/ppvg/node-slake-mocha)
-
-The tests can all be found in the `test` folder. Tests for ES6 are in the sub-folder `test/es6`.
-
-`$ node --harmony lib/slake.js test-es6`
-
 ## Node scripts
 
 The package.json have the following new scripts
@@ -100,10 +62,3 @@ The package.json have the following new scripts
 - test-es6 (runs es6 tests by first transpiling)
 
 Note that each of these are currently hardcoded to only operate on `block_scoping.ls`
-
-
-```LiveScript
-# Slakefile
-
-files = ['es6/block_scoping.ls'] # hard coded to only run block_scoping test for now
-```
