@@ -22,7 +22,9 @@ ppp = !-> pp it, true, null
 
 try
   o = parse-options process.argv
+  say 'options', o
   positional = o._
+  say 'positional.length' positional.length
 catch
   console.error e.message
   process.exit 1
@@ -148,17 +150,31 @@ switch
 !function write-JS source, js, base, json
   #     foo.ls     => foo.js
   #     foo.jsm.ls => foo.jsm
+  ext = 'X' if o.exe
+  ext = '.json' if json
+  extension = if ext is void then '.js' else ext
   filename = path.basename(source)replace do
-    /(?:(\.\w+)?\.\w+)?$/ -> &1 or if json then '.json' else '.js'
+    /(?:(\.\w+)?\.\w+)?$/ -> &1 or ext
+  filename = filename.replace /X$/, ''
+
   dir = path.dirname source
   if o.output
     dir = path.join that, dir.slice if base is '.' then 0 else base.length
   js-path = path.join dir, filename
+
+  if o.exe
+    js = "#!/usr/bin/env node\n\n" + js
+
   !function compile
     e <-! fs.write-file js-path, js || '\n'
     return warn e if e
     util.log "#source => #js-path" if o.watch
-  e <-! fs.stat dir
+    # add executable flag to js file
+    if o.exe
+      say "executable", js-path
+      xe <- fs.chmod js-path, '0755'
+      return warn xe if xe
+    e <-! fs.stat dir
   return compile! unless e
   require 'child_process' .exec do
     "mkdir #{['-p' unless /^win/test process.platform]} #dir" compile
