@@ -47,12 +47,24 @@ To add additional script tasks, edit the `scripts:` part of `package.json.ls`, t
 
 ### Make file
 
-Note: LiveScript has recently changed from using `slake` with a `Slakefile` to using make with a `Makefile`.
-
 The core script logic should be placed in the`scripts` folder.
 LiveScript ES6 scripts are placed in `es6/scripts`.
 
-`lsc -wco es6/scripts es6/scripts`
+To compile the executable scripts
+
+`./bin/lsc -wcxo es6/scripts es6/scripts`
+
+Notice the use of the new `-x` option to generate an executable js file ;)
+
+## Customizing command and options
+
+Add a new option to `options.ls`. Make changes in `command.ls`. Use `say` for debugging...
+Compile:
+
+`lsc -co lib src`
+
+`./bin/lsc ...` to test. Make sure you have at least one positional argument unless you want to enter *stdin* mode
+See [optionator](https://www.npmjs.org/package/optionator) for details on options parsing.
 
 ### Build parser
 
@@ -62,7 +74,7 @@ When the es6/src and es6/scripts have been compiled, you are ready to build:
 
 ## Node scripts
 
-The package.json have the following new scripts
+The `package.json` have the following new scripts
 
 - compile-es6 (compile test files to es6 syntax)
 - transpile-es6 (transpile test files to es5 by first compiling to es6 syntax)
