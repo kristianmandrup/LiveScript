@@ -162,15 +162,16 @@ switch
     dir = path.join that, dir.slice if base is '.' then 0 else base.length
   js-path = path.join dir, filename
 
-  if o.exe
-    js = "#!/usr/bin/env node\n\n" + js
+
+  is-exe = file-contains(js-path, /#!\/.+ node$/)
+  js = "#!/usr/bin/env node\n\n" + js unless is-exe
 
   !function compile
     e <-! fs.write-file js-path, js || '\n'
     return warn e if e
     util.log "#source => #js-path" if o.watch
     # add executable flag to js file
-    if o.exe
+    if o.exe or is-exe
       say "executable", js-path
       xe <- fs.chmod js-path, '0755'
       return warn xe if xe
@@ -178,6 +179,12 @@ switch
   return compile! unless e
   require 'child_process' .exec do
     "mkdir #{['-p' unless /^win/test process.platform]} #dir" compile
+
+!function file-contains file, expr
+  file-content(file).match expr
+
+!function file-content file
+  e <- fs.readFile(file).to-string!
 
 # Pretty-print a stream of tokens.
 !function print-tokens tokens
