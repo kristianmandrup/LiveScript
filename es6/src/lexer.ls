@@ -112,8 +112,8 @@ exports import
     id = camelize regex-match.1
     @check-consistency id, regex-match.1 if /-/.test regex-match.1
     if NONASCII.test id
-      try Function "var #id" catch then @carp "invalid identifier \"#id\""
-      # try Function "let #id" catch then @carp "invalid identifier \"#id\""
+      # try Function "var #id" catch then @carp "invalid identifier \"#id\""
+      try Function "let #id" catch then @carp "invalid identifier \"#id\""
     {last} = this
     # `id:_` `_.id` `@id`
     if regex-match.2 or last.0 is \DOT or @adi!
@@ -173,7 +173,8 @@ exports import
         tag = \BIOP
       else
         if able @tokens then id = \<<< else tag = \DECL
-    case \export \const \var then tag = \DECL
+    # adding let
+    case \export \const \var \let then tag = \DECL
     case \with
       tag = | able @tokens => \CLONEPORT
             | last.0 is \( => \BIOP

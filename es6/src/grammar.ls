@@ -299,7 +299,7 @@ bnf =
     o 'LABEL Expression' -> new Label $1, $2
     o 'LABEL Block'      ditto
 
-    # `var`, `const`, `export`, or `import`
+    # `var`, `const`, `export`, `let` or `import`
     o 'DECL INDENT ArgList OptComma DEDENT' -> Decl $1, $3, yylineno+1
 
   Exprs:
