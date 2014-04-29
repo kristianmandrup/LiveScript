@@ -175,10 +175,10 @@ switch
   require 'child_process' .exec do
     "mkdir #{['-p' unless /^win/test process.platform]} #dir" compile
 
-function file-contains file, expr
+!function file-contains file, expr
   expr.test slurp(file)
 
-function slurp file
+!function slurp file
   fs.read-file-sync(file).to-string!
 
 # Pretty-print a stream of tokens.
