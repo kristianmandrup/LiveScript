@@ -10,9 +10,14 @@ spit = (file, content) ->
     console.log "wrote to #{file}"
 
 slurp = (file) ->
+  var content
+  read-content file, ((err, data) -> content = data)
+  content
+
+!function read-content file, cb
   fs.readFile file, (err, data) ->
-    throw "error reading: #{file}" if(err)
-    data
+    cb err if err
+    cb null, data
 
 module.exports =
   spit: spit

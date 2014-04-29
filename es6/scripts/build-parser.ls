@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 result = require("../lib/grammar").generate!
   .replace /^[^]+?var (?=parser = {)/ \exports.
   .replace /\ncase \d+:\nbreak;/g ''

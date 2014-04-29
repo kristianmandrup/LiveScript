@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 LiveScript  = require '../lib'
 slurp       = require './base' .slurp
 spit        = require './base' .spit

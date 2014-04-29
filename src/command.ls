@@ -22,9 +22,7 @@ ppp = !-> pp it, true, null
 
 try
   o = parse-options process.argv
-  say 'options', o
   positional = o._
-  say 'positional.length' positional.length
 catch
   console.error e.message
   process.exit 1
@@ -150,20 +148,18 @@ switch
 !function write-JS source, js, base, json
   #     foo.ls     => foo.js
   #     foo.jsm.ls => foo.jsm
-  ext = 'X' if o.exe
+  is-exe = file-contains source, /^#!\/.+node\s*\n/
+  ext = 'X' if o.exe or is-exe
   ext = '.json' if json
   extension = if ext is void then '.js' else ext
   filename = path.basename(source)replace do
-    /(?:(\.\w+)?\.\w+)?$/ -> &1 or ext
+    /(?:(\.\w+)?\.\w+)?$/ -> &1 or extension
   filename = filename.replace /X$/, ''
-
   dir = path.dirname source
   if o.output
     dir = path.join that, dir.slice if base is '.' then 0 else base.length
   js-path = path.join dir, filename
 
-
-  is-exe = file-contains(js-path, /#!\/.+ node$/)
   js = "#!/usr/bin/env node\n\n" + js unless is-exe
 
   !function compile
@@ -172,7 +168,6 @@ switch
     util.log "#source => #js-path" if o.watch
     # add executable flag to js file
     if o.exe or is-exe
-      say "executable", js-path
       xe <- fs.chmod js-path, '0755'
       return warn xe if xe
     e <-! fs.stat dir
@@ -180,11 +175,11 @@ switch
   require 'child_process' .exec do
     "mkdir #{['-p' unless /^win/test process.platform]} #dir" compile
 
-!function file-contains file, expr
-  file-content(file).match expr
+function file-contains file, expr
+  expr.test slurp(file)
 
-!function file-content file
-  e <- fs.readFile(file).to-string!
+function slurp file
+  fs.read-file-sync(file).to-string!
 
 # Pretty-print a stream of tokens.
 !function print-tokens tokens
